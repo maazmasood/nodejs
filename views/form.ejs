@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Multi-Question Form</title>
   <link rel="stylesheet" href="/styles.css">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 </head>
 <style>
 
@@ -217,11 +219,45 @@ input[type="text"], input[type="email"],input[type="tel"] {
     
 
     <script>
+
+// Update your script tag in the HTML file to include jQuery
+
+// Add an event listener for form submission
+$(document).ready(function() {
+  $("#questionForm").submit(function(e) {
+    // Prevent the default form submission
+    e.preventDefault();
+
+    // Use AJAX to submit the form data
+    $.ajax({
+      type: "POST",
+      url: "/submit",  // Replace with your server endpoint
+      data: $(this).serialize(),  // Serialize the form data
+      success: function(response) {
+        // Update the content or handle the response as needed
+        console.log(response);
+
+        // For example, you can update a specific div with the response
+        $("#resultContainer").html(response);
+      },
+      error: function(error) {
+        console.log("Error:", error);
+      }
+    });
+  });
+});
+
+
+
+
         function selectOption(optionText) {
           // Set the selected option explicitly in a hidden field
           document.querySelector('input[name="option"]').value = optionText;
           document.getElementById('questionForm').submit();
         }
+
+
+
       </script>
   </body>
 </html>
