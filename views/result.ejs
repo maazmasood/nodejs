@@ -21,8 +21,6 @@
     }
 
     .container {
-      text-align: justify;
-      line-height: 25.6pt;
       max-width: 800px;
       background-color: #fff;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -37,7 +35,12 @@
       font-size: 21pt;
       letter-spacing: 2.45pt;
       text-align: center;
-      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-family: 'Calibri';
+      font-size: 18pt;
+      margin-bottom: 10px;
     }
 
     table {
@@ -48,12 +51,31 @@
 
     th, td {
       border: 1px solid #ddd;
-      padding: 12px;
+      padding: 10px;
       text-align: left;
     }
 
     th {
       background-color: #f2f2f2;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    a {
+      text-decoration: none;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    a:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
@@ -62,27 +84,24 @@
     <h1>Form Submission Result</h1>
 
     <% Object.keys(formData).forEach((page) => { %>
-      <h2>Page <%= page %></h2>
-      <table>
-        <tr>
-          <th>Question <%= page %> </th>
-          <th>Result</th>
-        </tr>
-        <% if (formData[page].question) { %>
-          <tr>
-            <td><strong><%= formData[page].question %></strong></td>
-            <td><%= formData[page].option %></td>
-          </tr>
-        <% } else { %>
-          <% Object.keys(formData[page]).forEach((field) => { %>
-            <tr>
-              <td><strong><%= field.charAt(0).toUpperCase() + field.slice(1) %></strong></td>
-              <td><%= formData[page][field] %></td>
-            </tr>
-          <% }); %>
-        <% } %>
-      </table>
-    <% }); %>
+      <div>
+        <h2>Page <%= page %></h2>
+        <table>
+          <tbody>
+            <% Object.keys(formData[page]).forEach((key) => { %>
+              <tr>
+                <th><%= key %></th>
+                <td><%= formData[page][key] %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% }) %>
+
+    <div class="button-container">
+      <a href="/">Back to Form</a>
+    </div>
   </div>
 </body>
 </html>
