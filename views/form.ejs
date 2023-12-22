@@ -5,9 +5,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Question Form</title>
+  <title>Multi-Question Form</title>
   <link rel="stylesheet" href="/styles.css">
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 </head>
 <style>
@@ -163,7 +163,7 @@ input[type="text"], input[type="email"],input[type="tel"] {
   
         <div class="option-container">
             <% for (let i = 0; i < questionData.options.length; i++) { %>
-                <div class="option-box" onclick="selectOption('<%= questionData.options[i].text %>')">
+                <div class="option-box" >
                   <img src="<%= questionData.options[i].image %>" alt="<%= questionData.options[i].text %>">
                   <p><%= questionData.options[i].text %></p>
                 </div>
@@ -220,44 +220,42 @@ input[type="text"], input[type="email"],input[type="tel"] {
 
     <script>
 
-// Update your script tag in the HTML file to include jQuery
+    
+      // Add an event listener for form submission
+      $(document).ready(function() {
+        
 
-// Add an event listener for form submission
-$(document).ready(function() {
-  $("#questionForm").submit(function(e) {
-    // Prevent the default form submission
-    e.preventDefault();
+    
+        // Add this part to attach the selectOption function to the click event
+        $(".option-box").on("click", function(event) {
+          var optionText = $(this).find("p").text();
+          selectOption(optionText, event);
+        });
 
-    // Use AJAX to submit the form data
-    $.ajax({
-      type: "POST",
-      url: "/submit",  // Replace with your server endpoint
-      data: $(this).serialize(),  // Serialize the form data
-      success: function(response) {
-        // Update the content or handle the response as needed
-        console.log(response);
-
-        // For example, you can update a specific div with the response
-        $("#resultContainer").html(response);
+        function selectOption(optionText, event) {
+        // Set the selected option explicitly in a hidden field
+        $('input[name="option"]').val(optionText);
+    
+        // Prevent the default form submission
+        event.preventDefault();
+    
+        // Submit the form using AJAX
+        $.ajax({
+          type: "POST",
+          url: "/submit",  // Replace with your server endpoint
+          data: $('#questionForm').serialize(),  // Serialize the form data
+          success: function(response) {
+        // Replace the current form with the new form
+        $(".form").html(response);
+        $(".form").replaceWith($(response).find(".form"));
+          console.log("Form replaced successfully");
       },
-      error: function(error) {
-        console.log("Error:", error);
+          error: function(error) {
+            console.log("Error:", error);
+          }
+        });
       }
-    });
-  });
-});
-
-
-
-
-        function selectOption(optionText) {
-          // Set the selected option explicitly in a hidden field
-          document.querySelector('input[name="option"]').value = optionText;
-          document.getElementById('questionForm').submit();
-        }
-
-
-
-      </script>
+      });
+    </script>
   </body>
 </html>
