@@ -1,0 +1,227 @@
+<!-- views/form.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Question Form</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<style>
+
+body {
+  font-family: 'Times New Roman';
+  font-size: 12pt;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.container {
+  text-align: justify;
+  line-height: 25.6pt;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-family: 'Calibri';
+  font-size: 21pt;
+  letter-spacing: 2.45pt;
+  text-align: center;
+}
+
+.form {
+  text-align: center;
+}
+
+.option-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.checkbox-container input {
+  margin-right: 10px;
+}
+
+.checkbox-container label {
+  margin: 0;
+}
+
+.option-box {
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.option-box:hover {
+  background-color: #d0d0d0;
+}
+
+.option-box img {
+  width: 200px;
+  height: 200px;
+  padding: 10px;;
+  margin-bottom: 5px;
+}
+
+/* Add the following styles for Form 6 */
+
+
+.text-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+.form6{
+text-align: left;
+}
+
+/* Add the following styles for Form 6 */
+input[type="text"], input[type="email"],input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+
+
+
+/* Add the following styles for the submit button */
+
+.button-container button {
+  background-color: #4caf50; /* Green background color */
+  color: white; /* White text color */
+  padding: 10px 20px; /* Padding inside the button */
+  font-size: 14pt; /* Font size of the text */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Optional: Add rounded corners */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Add transition for smooth hover effect */
+}
+
+.button-container button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+/* Add the following styles for the submit button */
+
+.button-container button {
+  background-color: #4caf50; /* Green background color */
+  color: white; /* White text color */
+  padding: 10px 20px; /* Padding inside the button */
+  font-size: 14pt; /* Font size of the text */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Optional: Add rounded corners */
+  cursor: pointer; /* Add a pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Add transition for smooth hover effect */
+}
+
+.button-container button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+
+</style>
+<body>
+    <div class="container">
+    
+      <form id="questionForm" class="form" action="/submit" method="post">
+        <p><strong><%= questionData.question %></strong></p>
+  
+        <div class="option-container">
+            <% for (let i = 0; i < questionData.options.length; i++) { %>
+                <div class="option-box" onclick="selectOption('<%= questionData.options[i].text %>')">
+                  <img src="<%= questionData.options[i].image %>" alt="<%= questionData.options[i].text %>">
+                  <p><%= questionData.options[i].text %></p>
+                </div>
+              <% } %>
+              <input type="hidden" name="option" value="">
+        </div>
+  
+        <% if (page == 4) { %>
+            <div class="text-container">
+              <textarea name="comments" id="comments" rows="4" cols="50" placeholder="( Write 0-40 Meter ) In Meter angebene"></textarea>
+            </div>
+    
+          <div class="button-container">
+            <button type="submit">Next</button>
+          </div>
+  
+          <% } %>
+
+          <% if (page == 5) { %>
+
+            <div class="form6">
+            <label for="name">Name:</label>
+      <input type="text" name="name" required>
+      <br />
+      <label for="lastName">Nachname:</label>
+      <input type="text" name="lastName" required>
+      <br />
+      <label for="email">Ihre E-Mail:</label>
+      <input type="email" name="email" required>
+      <br />
+      <label for="phone">Telefonnummer:</label>
+      <input type="tel" name="phone" required>
+      <br />
+      <label for="inquiry">Ihre Anfrage Nachricht:</label><br />
+      <textarea name="inquiry" rows="4" cols="70" required></textarea>
+      <br />
+      <div class="checkbox-container">
+        <input type="checkbox" name="privacy" id="privacy" required>
+        <label for="privacy">Ich stimme den Datenschutzbestimmungen <a href="/privacy">Nutzungsbedingungen zu</a></label>
+      </div>
+      <br />
+      <div class="button-container" style="text-align: center;">
+        <button type="submit">Submit Form</button>
+      </div>
+  </div>
+          <% } %>
+  
+        <input type="hidden" name="page" value="<%= page %>">
+      </form>
+    </div>
+  
+
+    
+
+    <script>
+        function selectOption(optionText) {
+          // Set the selected option explicitly in a hidden field
+          document.querySelector('input[name="option"]').value = optionText;
+          document.getElementById('questionForm').submit();
+        }
+      </script>
+  </body>
+</html>

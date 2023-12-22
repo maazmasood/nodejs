@@ -1,0 +1,81 @@
+<!-- views/form6.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Form</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Form - <%= page %></h1>
+
+    <form id="questionForm" class="form" action="/submit" method="post">
+      <p><strong><%= questionData.question %></strong></p>
+
+      <div class="option-container">
+        <% if (questionData.options && questionData.options.length > 0) { %>
+          <% for (let i = 0; i < questionData.options.length; i++) { %>
+            <div class="option-box" onclick="selectOption('<%= questionData.options[i].text %>')">
+              <img src="<%= questionData.options[i].image %>" alt="<%= questionData.options[i].text %>">
+              <p><%= questionData.options[i].text %></p>
+            </div>
+            <input type="radio" name="option" id="option<%= i + 1 %>" value="<%= questionData.options[i].text %>" style="display: none;">
+          <% } %>
+        <% } else if (questionData.textbox) { %>
+          <div class="text-container">
+            <label for="comments"><%= questionData.question %></label>
+            <textarea name="comments" id="comments" rows="4" cols="50" placeholder="Type your comments here" required></textarea>
+          </div>
+        <% } %>
+      </div>
+
+      <% if (page === 6) { %>
+        <div class="text-container">
+          <label for="name">1. Name:</label>
+          <input type="text" name="name" required>
+
+          <label for="lastName">2. Nachname:</label>
+          <input type="text" name="lastName" required>
+
+          <label for="email">3. Ihre E-Mail:</label>
+          <input type="email" name="email" required>
+
+          <label for="phone">4. Telefonnummer:</label>
+          <input type="tel" name="phone" required>
+
+          <label for="inquiry">5. Ihre Anfrage Nachricht (Text):</label>
+          <textarea name="inquiry" rows="4" cols="50" required></textarea>
+
+          <div class="checkbox-container">
+            <input type="checkbox" name="privacy" id="privacy" required>
+            <label for="privacy">6. Check Box Ich stimme den Datenschutzbestimmungen <a href="/impressum">zu</a></label>
+          </div>
+
+          <div class="button-container">
+            <button type="submit">Submit Form</button>
+          </div>
+        </div>
+      <% } else { %>
+        <!-- Add the following line to include the hidden input for the next page -->
+        <input type="hidden" name="nextPage" value="<%= page + 1 %>">
+      <% } %>
+
+      <div class="button-container">
+        <button type="submit">Next</button>
+      </div>
+
+      <input type="hidden" name="page" value="<%= page %>">
+    </form>
+  </div>
+
+  <script>
+    function selectOption(optionText) {
+      document.querySelector(`input[value="${optionText}"]`).checked = true;
+      document.getElementById('questionForm').submit();
+    }
+  </script>
+</body>
+</html>
